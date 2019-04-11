@@ -10,8 +10,21 @@ if (command === "movie-this") {
     getMovie();
 }
 
-// OMDB functionality
+if (command === "song-this") {
+    getSong();
+}
 
+// SPOTIFY functionality
+function getSong() {
+    spotify.search({ type: 'track', query: 'All the Small Things' }, function (err, data) {
+        if (err) {
+            return console.log('Error occurred: ' + err);
+        }
+        console.log(data.tracks.items);
+    });
+}
+
+// OMDB functionality
 function getMovie() {
     var baseURL = "http://www.omdbapi.com/";
     var apiKey = "trilogy";
