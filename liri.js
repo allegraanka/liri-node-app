@@ -14,12 +14,29 @@ if (command === "song-this") {
     getSong();
 }
 
+if (command === "test") {
+    test();
+}
+
+function test() {
+    spotify
+        .request('https://api.spotify.com/v1/tracks/7yCPwWs66K8Ba5lFuU2bcx')
+        .then(function (data) {
+            console.log(data);
+        })
+        .catch(function (err) {
+            console.error('Error occurred: ' + err);
+        });
+}
+
 // SPOTIFY functionality
 function getSong() {
-    spotify.search({ type: 'track', query: 'All the Small Things' }, function (err, data) {
+    var songTitle = process.argv[3];
+    spotify.search({ type: 'track', query: `${songTitle}` }, function (err, data) {
         if (err) {
             return console.log('Error occurred: ' + err);
         }
+        // console.log(JSON.stringify(data, null, 2));
         console.log(data.tracks.items);
     });
 }
