@@ -1,8 +1,10 @@
 require("dotenv").config();
+var fs = require("fs");
 var keys = require("./keys.js");
 var Spotify = require("node-spotify-api");
 var spotify = new Spotify(keys.spotify);
 var axios = require("axios");
+var moment = require("moment");
 
 var command = process.argv[2];
 
@@ -18,20 +20,9 @@ if (command === "concert-this") {
     getShows();
 }
 
-// if (command === "test") {
-//     test();
-// }
-
-// function test() {
-//     spotify
-//         .request('https://api.spotify.com/v1/tracks/7yCPwWs66K8Ba5lFuU2bcx')
-//         .then(function (data) {
-//             console.log(data);
-//         })
-//         .catch(function (err) {
-//             console.error('Error occurred: ' + err);
-//         });
-// }
+if (command === "do-what-it-says") {
+    readFile();
+}
 
 // SPOTIFY functionality
 function getSong() {
@@ -54,15 +45,15 @@ function getMovie() {
         `${baseURL}?apikey=${apiKey}&t=${movieTitle}`
     )
     .then(function (data) {
-        console.log(data);
-        console.log(`Title: ${data.data.Title}`);
+        // console.log(data);
+        console.log(`\nTitle: ${data.data.Title}`);
         console.log(`Released: ${data.data.Year}`);
         console.log(`IMDB Rating: ${data.data.imdbRating}`);
         console.log(`RT Rating: There is no RT rating...`);
         console.log(`Country: ${data.data.Country}`);
         console.log(`Language: ${data.data.Language}`);
         console.log(`Plot: ${data.data.Plot}`);
-        console.log(`Actors: ${data.data.Actors}`);
+        console.log(`Actors: ${data.data.Actors}\n`);
     })
     .catch(function (error) {
         console.log(error);
@@ -82,9 +73,19 @@ function getShows() {
               console.log(`City: ${data.data[i].venue.city}, ${data.data[i].venue.region}`);
               console.log(`Date: ${data.data[i].datetime}\n`);
           }
-        // console.log(data.data[0]);
       })
       .catch(function(error) {
         console.log(error);
       });
+}
+
+function readFile() {
+    fs.readFile("random.txt", "utf8", function(error, data) {
+        if (error) {
+            console.log(error);
+        }
+        // console.log(data);
+        var dataArray = data.split(",");
+        console.log(dataArray);
+    })
 }
